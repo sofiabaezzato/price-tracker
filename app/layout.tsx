@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Nav from "@/components/Nav";
+import { ClerkProvider } from '@clerk/nextjs'
 
 export const metadata: Metadata = {
 	title: "Price Tracker",
@@ -20,18 +21,20 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<body
-				className={cn(
-					"min-h-screen bg-background font-sans antialiased",
-					fontSans.variable,
-				)}
-			>
-				<Nav />
-				<div className="flex justify-center items-center p-24">
-					{children}
-				</div>
-			</body>
-		</html>
+		<ClerkProvider>
+			<html lang="en">
+				<body
+					className={cn(
+						"h-screen bg-background font-sans antialiased",
+						fontSans.variable,
+					)}
+				>
+					<Nav />
+					<div className="flex justify-center items-center p-24">
+						{children}
+					</div>
+				</body>
+			</html>
+		</ClerkProvider>
 	);
 }

@@ -1,12 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { auth } from '@clerk/nextjs'
+import { redirect } from 'next/navigation';
 
 export default function Home() {
+	const { userId } = auth()
+
+	if (userId) redirect('/dashboard')
 	return (
-		<main className="flex min-h-screen flex-col items-center p-24 gap-10">
-			<h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-				Price Tracker
+		<main className="flex h-screen flex-col items-center gap-10">
+			<h1 className="text-4xl font-extrabold lg:text-5xl">
+				Price Tracker Home
 			</h1>
-			<Button>Sign in</Button>
 		</main>
 	);
 }

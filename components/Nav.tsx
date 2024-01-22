@@ -1,18 +1,25 @@
+'use client'
+
 import React from 'react'
-import { Button } from "@/components/ui/button";
 import Link from 'next/link';
+import { SignInButton, UserButton, useUser } from '@clerk/nextjs';
 
 const Nav = () => {
+  const {user, isLoaded}= useUser()
+
   return (
     <nav className='w-full p-4 border-b border-slate-200'>
-      <div className="flex justify-between items-center">
-        <div className="flex gap-4">
+      <div className="max-w-[70rem] mx-auto flex justify-between items-center">
           <Link href={'/'}>Home</Link>
-          <Link href={'/dashboard'}>Dashboard</Link>
-        </div>
-
-        <Button>Sign in</Button>
-
+          
+          {isLoaded && user ?
+            <div className="flex gap-2 items-center">
+              <Link href={'/dashboard'}>Dashboard</Link>
+              <UserButton afterSignOutUrl='/'/>
+            </div>
+            : 
+            <SignInButton afterSignInUrl='/dashboard'/>
+          }
       </div>
     </nav>
   )
