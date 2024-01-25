@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
 
 const Nav = () => {
 	const { user, isLoaded } = useUser();
@@ -18,7 +18,7 @@ const Nav = () => {
 						<UserButton afterSignOutUrl="/" />
 					</div>
 				) : (
-					<SignInButton afterSignInUrl="/dashboard" />
+					<SignUpButton afterSignInUrl="/dashboard" />
 				)}
 			</div>
 		</nav>
