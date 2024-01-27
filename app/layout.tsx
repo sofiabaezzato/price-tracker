@@ -31,7 +31,7 @@ export default function RootLayout({
 					)}
 				>
 					<Nav />
-					<main className="flex justify-center items-center p-20">
+					<main className="flex flex-col justify-center items-center py-20 w-full">
 						{children}
 					</main>
 					<Toaster />
