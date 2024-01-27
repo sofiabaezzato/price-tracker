@@ -6,6 +6,8 @@ import React, { useState } from 'react'
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { urls } from '@/app/dashboard/page';
+import { isAmazonLink } from '@/lib/checkLink';
+import { toast } from './ui/use-toast';
 
 type urlFormProps = {
   urls: urls[],
@@ -21,6 +23,13 @@ const AddUrlForm = ({ urls, setUrls } : urlFormProps) => {
 
     if (newUrl === "") {
       return;
+    } else if (!isAmazonLink(newUrl)) {
+      toast({
+        variant: "destructive",
+        title: "Whoops! Wrong coordinates, my friend.",
+        description: "Make sure you're pointing to an Amazon star, not a black hole."
+      })
+      return
     }
 
     const supabaseAccessToken = await getToken({ template: "supabase" });
