@@ -1,6 +1,7 @@
 "use client"
 
 import AddUrlForm from '@/components/AddUrlForm';
+import TrackingList from '@/components/TrackingList';
 import { useToast } from '@/components/ui/use-toast';
 import supabaseClient from '@/lib/supabase-client';
 import { useAuth } from '@clerk/clerk-react';
@@ -57,6 +58,9 @@ const Dashboard = () => {
 			const supabase = await supabaseClient(supabaseAccessToken);
 
 			const { error } = await supabase.from('urls_tracked').delete().eq('url_id', urlId);
+			const filteredUrls = urls.filter(url => url.url_id !== urlId)
+			setUrls(filteredUrls)
+
 			if (error) {
 				toast({
 					variant: "destructive",
@@ -71,28 +75,17 @@ const Dashboard = () => {
 		}
 	}
 
-	if (isLoading) {
-		return <div>Loading...</div>
-	}
-
 	return (
-		<section className="flex flex-col justify-center items-center gap-10">
+		<section className="flex flex-col justify-center items-center gap-10 xl:max-w-[70rem] mx-10">
 			<h1 className="text-xl font-extrabold">
 				Dashboard
 			</h1>
 			<AddUrlForm urls={urls} setUrls={setUrls}/>
 
-		{urls?.map(url => (
-			<a
-				className='flex justify-center gap-2'
-				key={url.url_id}
-			>
-				{url.url}
-				<button
-				 onClick={() => handleDelete(url.url_id)}
-				>Delete</button>
-			</a>
-		))}
+			{isLoading ? <div>Loading...</div>
+			:
+			<TrackingList urls={urls} handleDelete={handleDelete}/>
+			}
 		</section>
 	);
 };
