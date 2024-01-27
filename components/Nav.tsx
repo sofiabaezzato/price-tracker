@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
+import { Button } from "./ui/button";
 
 const Nav = () => {
 	const { user, isLoaded } = useUser();
@@ -18,7 +19,10 @@ const Nav = () => {
 						<UserButton afterSignOutUrl="/" />
 					</div>
 				) : (
-					<SignUpButton afterSignInUrl="/dashboard" />
+					<div className="flex gap-2">
+						<Button><SignInButton /></Button>
+						<SignUpButton afterSignInUrl="/dashboard" />
+					</div>
 				)}
 			</div>
 		</nav>

@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Nav from "@/components/Nav";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
 	title: "Price Tracker",
@@ -30,9 +31,10 @@ export default function RootLayout({
 					)}
 				>
 					<Nav />
-					<div className="flex justify-center items-center p-24">
+					<main className="flex justify-center items-center p-20">
 						{children}
-					</div>
+					</main>
+					<Toaster />
 				</body>
 			</html>
 		</ClerkProvider>
