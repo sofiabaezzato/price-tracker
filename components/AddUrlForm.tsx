@@ -5,6 +5,8 @@ import { Button } from './ui/button';
 import { useEffect, useRef } from 'react';
 import { addUrl } from '@/actions/formAction';
 import { useFormState, useFormStatus } from 'react-dom';
+import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 
 const Submit = () => {
   const status = useFormStatus()
@@ -41,7 +43,6 @@ const AddUrlForm = () => {
         action={formAction}
         className='flex gap-2 w-full'
       >
-        
         <Input
           type="url"
           placeholder="Amazon Product URL"
@@ -50,8 +51,16 @@ const AddUrlForm = () => {
         />
         <Submit />
       </form>
-      <p className="">{formState?.message === "success" && "Submitted"}</p>
-      <p className="">{formState?.errors === "noAmazon" && "Not an amazon link"}</p>
+      {formState?.errors ? (
+        <Alert variant="destructive">
+          <ExclamationTriangleIcon className="h-4 w-4" />
+          <AlertTitle>{formState.errors}</AlertTitle>
+          <AlertDescription>
+            {formState.message}
+          </AlertDescription>
+        </Alert>
+        ) : null
+      }
     </>
   );
 }

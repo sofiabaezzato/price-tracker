@@ -76,8 +76,8 @@ const Dashboard = () => {
 	}
 
 	return (
-		<section className="flex flex-col justify-center items-center gap-10 xl:max-w-[70rem] mx-10">
-			<h1 className="text-xl font-extrabold">
+		<section className="flex flex-col justify-center items-center gap-2 xl:max-w-[70rem] mx-10">
+			<h1 className="text-xl font-extrabold mb-10">
 				Dashboard
 			</h1>
 			<AddUrlForm />
