@@ -6,6 +6,18 @@ import { useEffect, useRef } from 'react';
 import { addUrl } from '@/actions/formAction';
 import { useFormState, useFormStatus } from 'react-dom';
 
+const Submit = () => {
+  const status = useFormStatus()
+
+  return (
+    <Button
+      type="submit"
+      disabled={status.pending}
+    >
+      {status.pending ? 'Adding Product...' : 'Add Product'}
+    </Button>
+  )
+}
 
 const AddUrlForm = () => {
   const ref = useRef<HTMLFormElement>(null)
@@ -36,11 +48,7 @@ const AddUrlForm = () => {
           name='urlInput'
           required
         />
-        <Button
-          type="submit"
-        >
-          Start Tracking
-        </Button>
+        <Submit />
       </form>
       <p className="">{formState?.message === "success" && "Submitted"}</p>
       <p className="">{formState?.errors === "noAmazon" && "Not an amazon link"}</p>
