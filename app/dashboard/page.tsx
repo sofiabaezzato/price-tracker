@@ -80,7 +80,7 @@ const Dashboard = () => {
 			<h1 className="text-xl font-extrabold">
 				Dashboard
 			</h1>
-			<AddUrlForm urls={urls} setUrls={setUrls}/>
+			<AddUrlForm />
 
 			{isLoading ? <div>Loading...</div>
 			:
