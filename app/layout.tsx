@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 	description: "Track products' price and save money",
 };
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
 	subsets: ["latin"],
 	variable: "--font-sans",
 });
