@@ -15,7 +15,6 @@ const Nav = () => {
 
 				{isLoaded && user ? (
 					<div className="flex gap-2 items-center">
-						<Link href={"/dashboard"}>Dashboard</Link>
 						<UserButton afterSignOutUrl="/" />
 					</div>
 				) : (

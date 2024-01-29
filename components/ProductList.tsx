@@ -1,31 +1,18 @@
 "use client"
 
-import { urls } from '@/app/dashboard/page'
-import React from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Button } from './ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import Image from "next/image"
 import imageEx from '@/public/imgs/example.jpg'
-import Image from 'next/image'
+import { Button } from "@/components/ui/button"
+import deleteProduct from "@/actions/deleteAction"
+import { products } from "@/app/dashboard/page"
 
-
-type TrackingListProps = {
-  urls: urls[],
-  handleDelete: (urlId: string) => Promise<void>
-}
-
-const TrackingList = ({urls, handleDelete} : TrackingListProps) => {
+const ProductList = ({ products } : {products: products}) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 w-full">
-      {Object.values(urls).map(url => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-10 w-full">
+      {products?.map(product => (
         <Card
-          key={url.url_id}
+          key={product.url_id}
         >
           <CardHeader>
             <CardTitle>Card Title</CardTitle>
@@ -40,7 +27,7 @@ const TrackingList = ({urls, handleDelete} : TrackingListProps) => {
                 width={150}
                 className='self-center object-contain'
               />
-              <p className="truncate text-xs">{url.url}</p>
+              <p className="truncate text-xs">{product.url}</p>
             </div>
           </CardContent>
           <CardFooter className='flex justify-center gap-4'>
@@ -48,7 +35,7 @@ const TrackingList = ({urls, handleDelete} : TrackingListProps) => {
               variant={'outline'}
             >
               <a
-                href={url.url}
+                href={product.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -56,7 +43,7 @@ const TrackingList = ({urls, handleDelete} : TrackingListProps) => {
               </a>
             </Button>
             <Button
-              onClick={() => handleDelete(url.url_id)}
+              onClick={async () => {await deleteProduct(product.url_id)}}
             >
               Delete
             </Button>
@@ -64,10 +51,7 @@ const TrackingList = ({urls, handleDelete} : TrackingListProps) => {
         </Card>
       ))}
     </div>
-
-    
-
   )
 }
 
-export default TrackingList
+export default ProductList

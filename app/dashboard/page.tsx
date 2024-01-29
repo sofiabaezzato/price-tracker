@@ -1,91 +1,28 @@
-"use client"
-
+import { fetchData } from '@/actions/fetchDataAction';
 import AddUrlForm from '@/components/AddUrlForm';
-import TrackingList from '@/components/TrackingList';
-import { useToast } from '@/components/ui/use-toast';
-import supabaseClient from '@/lib/supabase-client';
-import { useAuth } from '@clerk/clerk-react';
-import React, { useEffect, useState } from "react";
+import ProductList from '@/components/ProductList';
 
-export type urls = {
-	url: string,
-	url_id: string;
-}
+export type products = {
+  url: string,
+  url_id: string
+}[] | null
 
-const Dashboard = () => {
-	const { getToken } = useAuth();
-	const [urls, setUrls] = useState<urls[]>([])
-	const [isLoading, setIsLoading] = useState(false)
-	const { toast } = useToast()
+const Dashboard = async () => {
+	const fetchedData = await fetchData()
 
-
- 
-  useEffect(() => {
-
-		const fetchData = async () => {
-			try {
-				setIsLoading(true)
-
-				// Get the user JWT from Clerk
-				const supabaseAccessToken = await getToken({ template: 'supabase' });
-				const supabase = await supabaseClient(supabaseAccessToken);
-				
-				// Get data from supabase db
-				const { data } = await supabase.from('urls_tracked').select('url, url_id');
-				
-				if (data) {
-					setUrls(data);
-				}
-			} catch (error) {
-				toast({
-					variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your request. Try again.",
-        })
-			} finally {
-				setIsLoading(false)
-			}
-		}
-    
-		fetchData()
-	}, [])
-
-	const handleDelete = async (urlId: string) => {
-		try {
-			setIsLoading(true)
-
-			const supabaseAccessToken = await getToken({ template: 'supabase' });
-			const supabase = await supabaseClient(supabaseAccessToken);
-
-			const { error } = await supabase.from('urls_tracked').delete().eq('url_id', urlId);
-			const filteredUrls = urls.filter(url => url.url_id !== urlId)
-			setUrls(filteredUrls)
-
-			if (error) {
-				toast({
-					variant: "destructive",
-					title: "Uh oh! Something went wrong.",
-					description: "There was a problem with your request. Try again."
-				})
-			}
-		} catch (error) {
-			
-		} finally {
-			setIsLoading(false)
-		}
-	}
+  const products = fetchedData.success
 
 	return (
-		<section className="flex flex-col justify-center items-center gap-10 xl:max-w-[70rem] mx-10">
-			<h1 className="text-xl font-extrabold">
-				Dashboard
+		<section className="flex flex-col justify-center items-center gap-2 xl:max-w-[70rem] mx-10">
+			<h1 className="text-2xl font-extrabold mb-10">
+				Tracked products
 			</h1>
-			<AddUrlForm urls={urls} setUrls={setUrls}/>
-
-			{isLoading ? <div>Loading...</div>
-			:
-			<TrackingList urls={urls} handleDelete={handleDelete}/>
+			<AddUrlForm />
+			{!products || products.length === 0 ? (
+				<p className="mt-8 text-center">Nothing to show here, yet!</p>
+				) : <ProductList products={products} />
 			}
+			
 		</section>
 	);
 };

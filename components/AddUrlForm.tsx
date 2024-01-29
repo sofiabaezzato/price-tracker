@@ -1,70 +1,55 @@
-"use client"
+'use client'
 
-import supabaseClient from '@/lib/supabase-client';
-import { useAuth } from '@clerk/nextjs';
-import React, { useState } from 'react'
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-import { urls } from '@/app/dashboard/page';
-import { isAmazonLink } from '@/lib/checkLink';
-import { toast } from './ui/use-toast';
+import { useEffect, useRef } from 'react';
+import { addUrl } from '@/actions/formAction';
+import { useFormState, useFormStatus } from 'react-dom';
+import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
+import { Submit } from './Submit';
 
-type urlFormProps = {
-  urls: urls[],
-  setUrls: React.Dispatch<React.SetStateAction<urls[]>>
-}
-
-const AddUrlForm = ({ urls, setUrls } : urlFormProps) => {
-  const { getToken, userId } = useAuth();
-  const [newUrl, setNewUrl] = useState<string>("");
-
-  const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
-    if (newUrl === "") {
-      return;
-    } else if (!isAmazonLink(newUrl)) {
-      toast({
-        variant: "destructive",
-        title: "Whoops! Wrong coordinates, my friend.",
-        description: "Make sure you're pointing to an Amazon star, not a black hole."
-      })
-      return
+const AddUrlForm = () => {
+  const ref = useRef<HTMLFormElement>(null)
+  const [formState, formAction] = useFormState(addUrl, {
+    message: "",
+    errors: undefined,
+    inputUrl: ""
+  })
+  
+  useEffect(() => {
+    if (formState?.message === "success") {
+      ref.current?.reset()
     }
+  }, [formState])
 
-    const supabaseAccessToken = await getToken({ template: "supabase" });
-    const supabase = await supabaseClient(supabaseAccessToken);
-
-    if (userId) {
-      const { data } = await supabase
-      .from("urls_tracked")
-      .insert({ url: newUrl, user_id: userId })
-      .select()
-
-      if (data) {
-        setUrls([...urls, data[0]]);
-        
-      }
-    }
-    
-    setNewUrl("");
-  };
 
   return (    
-    <div className="flex w-full max-w-sm items-center space-x-2">
-      <Input
-        type="url"
-        placeholder="Amazon Product URL"
-        value={newUrl}
-        onChange={e => setNewUrl(e.currentTarget.value)}
-      />
-      <Button
-        type="button"
-        onClick={e => handleSubmit(e)}
+    <>
+      <form
+        ref={ref}
+        action={formAction}
+        className='flex gap-2 w-full sm:max-w-xl'
       >
-        Start tracking
-      </Button>
-    </div>
+        <Input
+          type="url"
+          placeholder="Amazon product page URL"
+          name='urlInput'
+          required
+        />
+        <Submit />
+      </form>
+      {formState?.errors ? (
+        <Alert variant="destructive">
+          <ExclamationTriangleIcon className="h-4 w-4" />
+          <AlertTitle>{formState.errors}</AlertTitle>
+          <AlertDescription>
+            {formState.message}
+          </AlertDescription>
+        </Alert>
+        ) : null
+      }
+    </>
   );
 }
 
