@@ -23,6 +23,6 @@ export const fetchData = async () => {
     return { success: data }
 
   } catch (error) {
-    return { error }
+    return { error: "Something went wrong" }
   }
 }

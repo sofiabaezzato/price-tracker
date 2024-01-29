@@ -7,19 +7,7 @@ import { addUrl } from '@/actions/formAction';
 import { useFormState, useFormStatus } from 'react-dom';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
-
-const Submit = () => {
-  const status = useFormStatus()
-
-  return (
-    <Button
-      type="submit"
-      disabled={status.pending}
-    >
-      {status.pending ? 'Add...' : 'Add'}
-    </Button>
-  )
-}
+import { Submit } from './Submit';
 
 const AddUrlForm = () => {
   const ref = useRef<HTMLFormElement>(null)
