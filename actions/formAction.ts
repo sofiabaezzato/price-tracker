@@ -42,7 +42,8 @@ export const addUrl = async (
     .insert({ url: newUrl as string, user_id: userId })
     .select()
   }
-  //revalidatePath('/dashboard')
+  
+  revalidatePath('/dashboard')
 
   return {
     message: "success",

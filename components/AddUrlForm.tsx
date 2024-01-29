@@ -16,7 +16,7 @@ const Submit = () => {
       type="submit"
       disabled={status.pending}
     >
-      {status.pending ? 'Adding Product...' : 'Add Product'}
+      {status.pending ? 'Add...' : 'Add'}
     </Button>
   )
 }
@@ -41,11 +41,11 @@ const AddUrlForm = () => {
       <form
         ref={ref}
         action={formAction}
-        className='flex gap-2 w-full'
+        className='flex gap-2 w-full sm:max-w-xl'
       >
         <Input
           type="url"
-          placeholder="Amazon Product URL"
+          placeholder="Amazon product page URL"
           name='urlInput'
           required
         />

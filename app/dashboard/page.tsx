@@ -1,56 +1,35 @@
-"use client"
-
+import { fetchData } from '@/actions/fetchDataAction';
 import AddUrlForm from '@/components/AddUrlForm';
 import TrackingList from '@/components/TrackingList';
-import { useToast } from '@/components/ui/use-toast';
+import { toast, useToast } from '@/components/ui/use-toast';
 import supabaseClient from '@/lib/supabase-client';
 import { useAuth } from '@clerk/clerk-react';
 import React, { useEffect, useState } from "react";
+import ProductList from '@/components/ProductList';
 
-export type urls = {
-	url: string,
-	url_id: string;
-}
+export type products = {
+  url: string,
+  url_id: string
+}[] | null
 
-const Dashboard = () => {
-	const { getToken } = useAuth();
-	const [urls, setUrls] = useState<urls[]>([])
-	const [isLoading, setIsLoading] = useState(false)
-	const { toast } = useToast()
+const Dashboard = async () => {
+	const fetchedData = await fetchData()
 
+  if (!fetchedData) {
+    toast({
+			variant: "destructive",
+			title: "Uh oh! Something went wrong.",
+			description: "There was a problem with your request. Try again."
+		})
+		return
+  }
 
- 
-  useEffect(() => {
+  const products = fetchedData.success
 
-		const fetchData = async () => {
-			try {
-				setIsLoading(true)
+	if (!products) return <p className="">Nothing to show here.</p>
+	
 
-				// Get the user JWT from Clerk
-				const supabaseAccessToken = await getToken({ template: 'supabase' });
-				const supabase = await supabaseClient(supabaseAccessToken);
-				
-				// Get data from supabase db
-				const { data } = await supabase.from('urls_tracked').select('url, url_id');
-				
-				if (data) {
-					setUrls(data);
-				}
-			} catch (error) {
-				toast({
-					variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your request. Try again.",
-        })
-			} finally {
-				setIsLoading(false)
-			}
-		}
-    
-		fetchData()
-	}, [])
-
-	const handleDelete = async (urlId: string) => {
+	/* const handleDelete = async (urlId: string) => {
 		try {
 			setIsLoading(true)
 
@@ -73,19 +52,16 @@ const Dashboard = () => {
 		} finally {
 			setIsLoading(false)
 		}
-	}
+	} */
 
 	return (
 		<section className="flex flex-col justify-center items-center gap-2 xl:max-w-[70rem] mx-10">
-			<h1 className="text-xl font-extrabold mb-10">
-				Dashboard
+			<h1 className="text-2xl font-extrabold mb-10">
+				Tracked products
 			</h1>
 			<AddUrlForm />
-
-			{isLoading ? <div>Loading...</div>
-			:
-			<TrackingList urls={urls} handleDelete={handleDelete}/>
-			}
+			<ProductList products={products} />
+			
 		</section>
 	);
 };
