@@ -39,7 +39,7 @@
 Cypress.Commands.add(`initializeAuth`, () => {
   cy.log(`Initializing auth state.`);
 
-  cy.visit(`/dashboard`,  {
+  cy.visit(`/sign-in`,  {
     failOnStatusCode: false,
   });
 

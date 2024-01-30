@@ -19,7 +19,7 @@ const Nav = () => {
 					</div>
 				) : (
 					<div className="flex gap-2">
-						<Button><SignInButton /></Button>
+						<Button><SignInButton data-cy="signin"/></Button>
 						<SignUpButton afterSignInUrl="/dashboard" />
 					</div>
 				)}
