@@ -18,3 +18,5 @@ jobs:
         with:
           start: npm run dev
           wait-on: 'http://localhost:3000'
+        env:
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
