@@ -18,3 +18,17 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Initialize auth to a state where you're
+       * logged in as the test user.
+       *
+       * @example cy.initializeAuth()
+       */
+      initializeAuth(): Chainable<void>;
+    }
+  }
+}
