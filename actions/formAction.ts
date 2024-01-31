@@ -4,6 +4,7 @@ import { isAmazonLink } from "@/lib/checkLink";
 import supabaseClient from "@/lib/supabase-client";
 import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
+import getStaticProps from "./scraper";
 
 type FormState = {
   message: string,
@@ -37,9 +38,10 @@ export const addUrl = async (
   const supabase = await supabaseClient(supabaseAccessToken);
 
   if (userId) {
+    const { props } = await getStaticProps(newUrl)
     const { data } = await supabase
     .from("urls_tracked")
-    .insert({ url: newUrl as string, user_id: userId })
+    .insert({ url: newUrl as string, user_id: userId, name: props.name, initial_price: props.price, symbol: props.symbol, image: props.image, last_scraped: props.lastScraped })
     .select()
   }
   

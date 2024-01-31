@@ -16,7 +16,7 @@ export const fetchData = async () => {
     const supabaseAccessToken = await getToken({ template: 'supabase' });
     const supabase = await supabaseClient(supabaseAccessToken);
 
-    const { data } = await supabase.from('urls_tracked').select('url, url_id');
+    const { data } = await supabase.from('urls_tracked').select('url, url_id, name, symbol, initial_price, current_price, image, last_scraped');
 
     revalidatePath('/dashboard')
 

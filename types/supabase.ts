@@ -37,18 +37,36 @@ export interface Database {
       urls_tracked: {
         Row: {
           created_at: string
+          current_price: number | null
+          image: string | null
+          initial_price: number | null
+          last_scraped: string | null
+          name: string | null
+          symbol: string | null
           url: string
           url_id: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          current_price?: number | null
+          image?: string | null
+          initial_price?: number | null
+          last_scraped?: string | null
+          name?: string | null
+          symbol?: string | null
           url: string
           url_id?: string
           user_id: string
         }
         Update: {
           created_at?: string
+          current_price?: number | null
+          image?: string | null
+          initial_price?: number | null
+          last_scraped?: string | null
+          name?: string | null
+          symbol?: string | null
           url?: string
           url_id?: string
           user_id?: string
