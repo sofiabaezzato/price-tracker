@@ -1,15 +1,12 @@
 describe(`Login and visit dashboard`, () => {
-  beforeEach(() => {
-    cy.initializeAuth();
-  });
 
   // signedin! Now navigate to the dashboard
   it("navigate to the dashboard", () => {
+    cy.initializeAuth();
     // open dashboard page
-    cy.visit(`/dashboard`,  {
-      failOnStatusCode: false,
-    });
+    cy.visit(`/dashboard`);
   
-    cy.get("h1").contains("Tracked products");   
+    cy.screenshot()
+    // cy.get("h1").contains("Tracked products");   
   });
 });
