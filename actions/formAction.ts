@@ -26,10 +26,13 @@ export const addUrl = async (
       errors: "Error: invalid link!",
       inputUrl: ""
     }
-  } else if (!isAmazonLink(newUrl as string)) {
+  }
+  const link = isAmazonLink(newUrl as string)
+  
+  if (link === null) {
     return {
       message: "Double-check your coordinates, and make sure you're pointing to an Amazon star, not a black hole.",
-      errors: "Error: not an Amazon link!",
+      errors: "Error: not an Amazon product link!",
       inputUrl: ""
     }
   }
@@ -38,11 +41,19 @@ export const addUrl = async (
   const supabase = await supabaseClient(supabaseAccessToken);
 
   if (userId) {
-    const { props } = await getStaticProps(newUrl)
+    const { props } = await getStaticProps(link)
+
+    if (!props.price) return {
+      message: "I can't retrive data. Make sure to provide only Amazon product page URLs.",
+      errors: "Error, try again!",
+      inputUrl: ""
+    }
+    
     const { data } = await supabase
     .from("urls_tracked")
-    .insert({ url: newUrl as string, user_id: userId, name: props.name, initial_price: props.price, symbol: props.symbol, image: props.image, last_scraped: props.lastScraped })
+    .insert({ url: link as string, user_id: userId, name: props.name, initial_price: props.price, symbol: props.symbol, image: props.image, last_scraped: props.lastScraped })
     .select()
+    console.log(data)
   }
   
   revalidatePath('/dashboard')

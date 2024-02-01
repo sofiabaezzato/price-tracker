@@ -1,13 +1,14 @@
+import { evalData } from '@/actions/evalData';
 import { fetchData } from '@/actions/fetchDataAction';
 import AddUrlForm from '@/components/AddUrlForm';
 import ProductList from '@/components/ProductList';
 
 const Dashboard = async () => {
 	const fetchedData = await fetchData()
-
+	evalData()
   const products = fetchedData.success
 	
-	console.log(products)
+	// console.log(products)
 	if (!products) {
 		return
 	}
