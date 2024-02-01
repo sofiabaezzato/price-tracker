@@ -8,6 +8,7 @@ describe(`Login and visit dashboard`, () => {
       failOnStatusCode: false,
     });
   
+    cy.screenshot()
     // cy.get("h1").contains("Tracked products");   
   });
 });
