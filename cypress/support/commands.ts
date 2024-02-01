@@ -51,8 +51,8 @@ Cypress.Commands.add(`initializeAuth`, () => {
     .then(async (window) => {
       cy.clearCookies({ domain: window.location.href });
       const res = await window.Clerk.client.signIn.create({
-        identifier: Cypress.env(`test_email`),
-        password: Cypress.env(`test_password`),
+        identifier: Cypress.env('test_email'),
+        password: Cypress.env('test_password'),
       });
  
       await window.Clerk.setActive({

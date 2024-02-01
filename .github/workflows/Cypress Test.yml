@@ -24,3 +24,9 @@ jobs:
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
           CYPRESS_test_email: ${{ secrets.CYPRESS_TEST_EMAIL }}
           CYPRESS_test_password: ${{ secrets.CYPRESS_TEST_PASSWORD }}
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+            name: cypress-snapshots
+            path: cypress/snapshots
