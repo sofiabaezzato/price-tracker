@@ -1,10 +1,8 @@
 describe(`Login and visit dashboard`, () => {
-  beforeEach(() => {
-    cy.initializeAuth();
-  });
 
   // signedin! Now navigate to the dashboard
   it("navigate to the dashboard", () => {
+    cy.initializeAuth();
     // open dashboard page
     cy.visit(`/dashboard`,  {
       failOnStatusCode: false,
