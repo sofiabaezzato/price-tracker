@@ -26,7 +26,7 @@ jobs:
           CYPRESS_test_password: ${{ secrets.CYPRESS_TEST_PASSWORD }}
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
-        if: failure()
+        if: always()
         with:
             name: cypress-snapshots
             path: cypress/screenshots/sign_in.cy.ts
