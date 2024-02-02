@@ -41,7 +41,15 @@ export const addUrl = async (
   const supabase = await supabaseClient(supabaseAccessToken);
 
   if (userId) {
-    const { props } = await getStaticProps(link)
+    const response = await getStaticProps(link)
+
+    if (response.error !== undefined) return {
+      message: "I can't retrive data. Make sure to provide only Amazon product page URLs.",
+      errors: "Error, try again!",
+      inputUrl: ""
+    }
+
+    const props = response.props
 
     if (!props.price) return {
       message: "I can't retrive data. Make sure to provide only Amazon product page URLs.",

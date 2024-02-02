@@ -2,11 +2,10 @@
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from "next/image"
-import imageEx from '@/public/imgs/example.jpg'
 import { Button } from "@/components/ui/button"
 import deleteProduct from "@/actions/deleteAction"
 
-type product = {
+export type product = {
   url: string;
   url_id: string;
   name: string | null;
@@ -27,20 +26,29 @@ const ProductList = ( {products} : {products: product[]} ) => {
         >
           <CardHeader>
             <CardTitle className="line-clamp-2 leading-5">{product.name}</CardTitle>
-            <CardDescription>Current price: <span>{product?.initial_price?.toString().replace('.', ',')} {product?.symbol}</span></CardDescription>
-            <CardDescription className='text-xs'>Initial price: <span>15,45 €</span></CardDescription>
+            <CardDescription>Current price: {!product?.current_price ? (
+              <span>{product?.initial_price?.toFixed(2).replace('.', ',')} {product?.symbol}</span>
+              ) : (
+                <span>{product?.current_price?.toFixed(2).replace('.', ',')} {product?.symbol}</span>
+              )}
+            </CardDescription>
+            {product?.current_price === product?.initial_price || !product?.current_price ? null : (
+              <CardDescription className='text-xs'>
+                Initial price: <span>{product?.initial_price?.toString().replace('.', ',')} {product?.symbol}</span>
+              </CardDescription>
+            )}
           </CardHeader>
           <CardContent>
             
               {product.image ? (
-                <div className='flex flex-col gap-4 max-h-34'>
+                <div className='flex flex-col gap-4'>
                   <Image
                     width={100}
                     height={100}
                     src={product.image}
-                    alt="product-img h-34 w-auto"
+                    alt="product-img"
 
-                    className='self-center object-contain'
+                    className='self-center object-contain max-h-32 w-auto'
                   />
                 </div>
               ) : null }
