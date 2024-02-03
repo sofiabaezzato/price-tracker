@@ -40,11 +40,11 @@ export const evalData = async ( data : product) => {
       const props = response.props
       const { data } = await supabase
       .from("urls_tracked")
-      .update({ current_price: props.price, last_scraped: props.lastScraped })
+      .update({ current_price: props?.price, last_scraped: props?.lastScraped })
       .eq('url_id', urlId)
       .select('url, url_id, name, symbol, initial_price, current_price, image, last_scraped')
-      
-      revalidatePath('/dashboard')
+
+      revalidatePath('/')
       console.log('Path revalidated')
       if (data) {
         return {

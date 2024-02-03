@@ -33,9 +33,9 @@ async function getStaticProps(url : FormDataEntryValue) {
     }
   } catch (error) {
     return {
-      props: {},
-      error: 'Can\'t retrive product data. Try again',
-      revalidate: 0,
+      props: undefined,
+      error: 'Error! Can\'t load product data. Try again',
+      revalidate: 3600,
     }
   }
   
