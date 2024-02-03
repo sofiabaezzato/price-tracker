@@ -5,6 +5,7 @@ import supabaseClient from "@/lib/supabase-client";
 import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 import getStaticProps from "./scraper";
+import { getUser } from "./getUserAction";
 
 type FormState = {
   message: string,
@@ -15,9 +16,7 @@ type FormState = {
 export const addUrl = async (
   prevState: FormState,
   formData: FormData
-): Promise<FormState> => {
-  const { getToken, userId } = auth();
-  
+): Promise<FormState> => {  
   const newUrl = formData.get("urlInput")
   
   if (newUrl === null || newUrl === "") {
@@ -37,12 +36,12 @@ export const addUrl = async (
     }
   }
 
-  const supabaseAccessToken = await getToken({ template: "supabase" });
-  const supabase = await supabaseClient(supabaseAccessToken);
+  const user = await getUser()
+  const userId = user?.id
 
   if (userId) {
     const response = await getStaticProps(link)
-
+    console.log(response?.error)
     if (response.error !== undefined) return {
       message: "I can't retrive data. Make sure to provide only Amazon product page URLs.",
       errors: "Error, try again!",
@@ -50,18 +49,32 @@ export const addUrl = async (
     }
 
     const props = response.props
-
+    console.log(props)
     if (!props.price) return {
       message: "I can't retrive data. Make sure to provide only Amazon product page URLs.",
       errors: "Error, try again!",
       inputUrl: ""
     }
+
+    const { getToken } = auth();
+    const supabaseAccessToken = await getToken({ template: "supabase" });
+    const supabase = await supabaseClient(supabaseAccessToken);
     
-    const { data } = await supabase
+    const { data: newUrlData } = await supabase
     .from("urls_tracked")
-    .insert({ url: link as string, user_id: userId, name: props.name, initial_price: props.price, symbol: props.symbol, image: props.image, last_scraped: props.lastScraped })
+    .insert([
+      {
+        url: link as string,
+        user_id: userId,
+        name: props.name,
+        initial_price: props.price,
+        symbol: props.symbol,
+        image: props.image
+      }
+    ])
     .select()
-    console.log(data)
+
+    console.log(newUrlData)
   }
   
   revalidatePath('/dashboard')

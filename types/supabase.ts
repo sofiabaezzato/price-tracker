@@ -38,38 +38,67 @@ export interface Database {
         Row: {
           created_at: string
           current_price: number | null
+          id: string
           image: string | null
           initial_price: number | null
-          last_scraped: string | null
+          list: string | null
           name: string | null
           symbol: string | null
           url: string
-          url_id: string
           user_id: string
         }
         Insert: {
           created_at?: string
           current_price?: number | null
+          id?: string
           image?: string | null
           initial_price?: number | null
-          last_scraped?: string | null
+          list?: string | null
           name?: string | null
           symbol?: string | null
           url: string
-          url_id?: string
           user_id: string
         }
         Update: {
           created_at?: string
           current_price?: number | null
+          id?: string
           image?: string | null
           initial_price?: number | null
-          last_scraped?: string | null
+          list?: string | null
           name?: string | null
           symbol?: string | null
           url?: string
-          url_id?: string
           user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "urls_tracked_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      users: {
+        Row: {
+          created_at: string
+          id: string
+          last_scraped: string | null
+          lists: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          last_scraped?: string | null
+          lists?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_scraped?: string | null
+          lists?: string[] | null
         }
         Relationships: []
       }

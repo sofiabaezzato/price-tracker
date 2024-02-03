@@ -8,8 +8,11 @@ import { useFormState, useFormStatus } from 'react-dom';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 import { Submit } from './Submit';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel } from '@radix-ui/react-select';
 
-const AddUrlForm = () => {
+type lists = string[] | null | undefined
+
+const AddUrlForm = ({lists} : {lists: lists}) => {
   const ref = useRef<HTMLFormElement>(null)
   const [formState, formAction] = useFormState(addUrl, {
     message: "",
@@ -29,7 +32,7 @@ const AddUrlForm = () => {
       <form
         ref={ref}
         action={formAction}
-        className='flex gap-2 w-full sm:max-w-xl'
+        className='flex gap-2 w-full sm:max-w-xl flex-wrap justify-center sm:flex-nowrap'
       >
         <Input
           type="url"
@@ -37,6 +40,7 @@ const AddUrlForm = () => {
           name='urlInput'
           required
         />
+
         <Submit />
       </form>
       {formState?.errors ? (

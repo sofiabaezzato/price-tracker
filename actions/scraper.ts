@@ -29,13 +29,13 @@ async function getStaticProps(url : FormDataEntryValue) {
         lastScraped: lastScraped
       },
       error: undefined,
-      revalidate: 3600,
+      revalidate: 60,
     }
   } catch (error) {
     return {
       props: undefined,
       error: 'Error! Can\'t load product data. Try again',
-      revalidate: 3600,
+      revalidate: 60,
     }
   }
   
