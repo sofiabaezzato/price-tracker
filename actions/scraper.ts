@@ -12,8 +12,8 @@ async function getStaticProps(url : FormDataEntryValue) {
 
     const $ = cheerio.load(data)
     const name = $('#productTitle').text()
-    const priceWhole = $('.a-price-whole').first().text()
-    const priceFraction = $('.a-price-fraction').first().text()
+    const priceWhole = $('span.a-price-whole').first().text()
+    const priceFraction = $('span.a-price-fraction').first().text()
     const symbol = $('.a-price-symbol').first().text()
     const image = $('#landingImage').attr('src') 
     
