@@ -68,6 +68,7 @@ export const addUrl = async (
         user_id: userId,
         name: props.name,
         initial_price: props.price,
+        current_price: props.price,
         symbol: props.symbol,
         image: props.image
       }

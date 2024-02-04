@@ -5,6 +5,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import deleteProduct from "@/actions/deleteAction"
 import { formatDate } from 'date-fns'
+import { useEffect, useState } from "react"
 
 export type product = {
   created_at: string;
@@ -24,10 +25,15 @@ export type product = {
 }
 
 const ProductList = ( {products} : {products: product[]} ) => {
-  let updatedAt = 'undefined'
-  if (products[0].users?.last_scraped) {
-    updatedAt = formatDate(products[0].users?.last_scraped, "dd MMM yyyy kk:mm ")
-  }
+  const [updatedAt, setUpdatedAt] = useState<string>("")
+
+  useEffect(() => {
+    if (products[0].users?.last_scraped) {
+      const time = formatDate(products[0].users?.last_scraped, "dd MMM yyyy kk:mm ")
+      setUpdatedAt(time)
+    }
+  }, [])
+  
   return (
     <div className="flex flex-col">
       <p className="text-xs text-gray-600 mt-4 text-center">Data updated every hour. Last update: {updatedAt}</p>
