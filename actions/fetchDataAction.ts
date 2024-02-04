@@ -15,12 +15,20 @@ export const fetchData = async () => {
     // Get the user JWT from Clerk
     const supabaseAccessToken = await getToken({ template: 'supabase' });
     const supabase = await supabaseClient(supabaseAccessToken);
-
-    const { data } = await supabase.from('urls_tracked').select('url, url_id, name, symbol, initial_price, current_price, image, last_scraped');
+    
+    const { data } = await supabase
+    .from('urls_tracked')
+    .select(`
+      *,
+      users (
+        id,
+        last_scraped
+      )
+    `)
 
     revalidatePath('/dashboard')
 
-    return { success: data }
+    return { data }
 
   } catch (error) {
     return { error: "Something went wrong" }

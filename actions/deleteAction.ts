@@ -16,7 +16,10 @@ const deleteProduct = async (urlId: string) => {
     const supabaseAccessToken = await getToken({ template: 'supabase' });
     const supabase = await supabaseClient(supabaseAccessToken);
 
-    const { error } = await supabase.from('urls_tracked').delete().eq('url_id', urlId);
+    const { error } = await supabase
+      .from('urls_tracked')
+      .delete()
+      .eq('id', urlId);
 
     revalidatePath('/dashboard')
 

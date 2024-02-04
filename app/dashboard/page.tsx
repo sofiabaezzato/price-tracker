@@ -1,23 +1,47 @@
 import { fetchData } from '@/actions/fetchDataAction';
 import AddUrlForm from '@/components/AddUrlForm';
 import ProductList from '@/components/ProductList';
+import { getUser } from '@/actions/getUserAction';
+import { differenceInMinutes } from 'date-fns';
+import { updateProduct } from '@/actions/updateProductAction';
+
+
+
 
 const Dashboard = async () => {
-	const fetchedData = await fetchData()
 
-  const products = fetchedData.success
+	const user = await getUser()
 	
-	console.log(products)
-	if (!products) {
+	const lists = user?.lists
+
+	const data = await fetchData()
+ 
+	if (!data) {
 		return
 	}
+	let products = data.data
 
+	if (user?.last_scraped) {
+		const diff = differenceInMinutes(
+			new Date(),
+			new Date(user.last_scraped)
+		)
+
+		if (diff > 60) {
+			console.log(diff, 'scraping new data')
+			products?.map(async product => {
+				product = await updateProduct(product)
+			})
+			
+		}
+	}
+	
 	return (
-		<section className="flex flex-col justify-center items-center gap-2 xl:max-w-[70rem] mx-10">
+		<section className="flex flex-col justify-center items-center gap-2 xl:w-[70rem] mx-10">
 			<h1 className="text-2xl font-extrabold mb-10">
 				Tracked products
 			</h1>
-			<AddUrlForm />
+			<AddUrlForm lists={lists}/>
 			{!products || products.length === 0 ? (
 				<p className="mt-8 text-center">Nothing to show here, yet!</p>
 				) : <ProductList products={products}/>
