@@ -44,7 +44,7 @@ const AddUrlForm = ({lists} : {lists: lists}) => {
         <Submit />
       </form>
       {formState?.errors ? (
-        <Alert variant="destructive">
+        <Alert variant="destructive" className='w-full sm:max-w-xl'>
           <ExclamationTriangleIcon className="h-4 w-4" />
           <AlertTitle>{formState.errors}</AlertTitle>
           <AlertDescription>

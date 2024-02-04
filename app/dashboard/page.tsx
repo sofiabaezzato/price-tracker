@@ -5,7 +5,11 @@ import { getUser } from '@/actions/getUserAction';
 import { differenceInMinutes } from 'date-fns';
 import { updateProduct } from '@/actions/updateProductAction';
 
+
+
+
 const Dashboard = async () => {
+
 	const user = await getUser()
 	
 	const lists = user?.lists
@@ -23,11 +27,12 @@ const Dashboard = async () => {
 			new Date(user.last_scraped)
 		)
 
-		if (diff > 1) {
+		if (diff > 60) {
 			console.log(diff, 'scraping new data')
 			products?.map(async product => {
-				await updateProduct(product)
+				product = await updateProduct(product)
 			})
+			
 		}
 	}
 	

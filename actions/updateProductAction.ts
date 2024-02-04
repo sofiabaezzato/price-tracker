@@ -39,6 +39,6 @@ export const updateProduct = async (product : product) => {
   console.log('User DB last scraped updated.', updatedUserData)
 
   revalidatePath('/dashboard')
-  
+
   return product
 }
