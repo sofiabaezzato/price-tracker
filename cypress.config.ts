@@ -9,6 +9,6 @@ export default defineConfig({
       test_email: "",
       test_password: ""
     },
-    chromeWebSecurity: false,
+    
   },
 );
