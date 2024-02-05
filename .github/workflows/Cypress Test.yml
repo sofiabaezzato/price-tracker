@@ -22,6 +22,8 @@ jobs:
         env:
           CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_KEY }}
           CYPRESS_test_email: ${{ secrets.CYPRESS_TEST_EMAIL }}
           CYPRESS_test_password: ${{ secrets.CYPRESS_TEST_PASSWORD }}
       - name: Upload screenshots
