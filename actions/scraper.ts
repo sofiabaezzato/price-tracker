@@ -12,12 +12,14 @@ async function getStaticProps(url : FormDataEntryValue) {
 
     const $ = cheerio.load(data)
     const name = $('#productTitle').text()
+
     const priceWhole = $('span.a-price-whole').first().text()
     const priceFraction = $('span.a-price-fraction').first().text()
+    
     const symbol = $('.a-price-symbol').first().text()
     const image = $('#landingImage').attr('src') 
-    
-    const price = parseFloat(`${parseInt(priceWhole)}.${priceFraction}`) || parseFloat($('.a-price').first().text().replace(',','.'))
+
+    const price = parseFloat(`${parseInt(priceWhole)}.${priceFraction}`) || parseFloat($('span.a-price').first().text().replace(',','.'))
     const lastScraped = new Date().toISOString()
 
     return {
