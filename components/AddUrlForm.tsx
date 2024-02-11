@@ -38,6 +38,7 @@ const AddUrlForm = ({lists} : {lists: lists}) => {
           type="url"
           placeholder="Amazon product page URL"
           name='urlInput'
+          data-cy="urlInput"
           required
         />
 

@@ -44,7 +44,7 @@ const ProductList = ( {products} : {products: product[]} ) => {
             className="flex flex-col justify-between"
           >
             <CardHeader>
-              <CardTitle className="line-clamp-2 leading-5">{product.name}</CardTitle>
+              <CardTitle className="line-clamp-2 leading-5" data-cy="productName">{product.name}</CardTitle>
               <CardDescription>Current price: {!product?.current_price ? (
                 <span>{product?.initial_price?.toFixed(2).replace('.', ',')} {product?.symbol}</span>
                 ) : (
@@ -85,6 +85,7 @@ const ProductList = ( {products} : {products: product[]} ) => {
                 </a>
               </Button>
               <Button
+                data-cy="deleteBtn"
                 onClick={async () => {
                   if (product) await deleteProduct(product.id)}}
               >
