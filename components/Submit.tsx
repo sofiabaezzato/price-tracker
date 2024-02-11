@@ -8,6 +8,7 @@ export const Submit = () => {
   return (
     <Button
       type="submit"
+      data-cy='submitBtn'
       disabled={status.pending}
     >
       {status.pending ? 'Add...' : 'Add'}
