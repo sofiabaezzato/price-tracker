@@ -10,6 +10,7 @@ import { product } from "@/components/ProductList";
 export const updateProduct = async (product : product) => {
   const updatedProduct = await getStaticProps(product.url)
   const updatedPrice = updatedProduct.props?.price
+  console.log('updated Price from scraper: ', updatedPrice)
 
   const { getToken } = auth();
   const supabaseAccessToken = await getToken({ template: "supabase" });
@@ -28,15 +29,6 @@ export const updateProduct = async (product : product) => {
     .select()
     console.log('URL DB price updated.', updatedUrlData)
   }
-
-  const { data: updatedUserData } = await supabase
-  .from("users")
-  .update(
-    { last_scraped: new Date().toISOString() }
-  )
-  .eq("id", product.user_id)
-  .select()
-  console.log('User DB last scraped updated.', updatedUserData)
 
   revalidatePath('/dashboard')
 

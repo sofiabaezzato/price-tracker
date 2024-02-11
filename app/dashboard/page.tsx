@@ -4,6 +4,7 @@ import ProductList from '@/components/ProductList';
 import { getUser } from '@/actions/getUserAction';
 import { differenceInMinutes } from 'date-fns';
 import { updateProduct } from '@/actions/updateProductAction';
+import { updateUser } from '@/actions/updateUserAction';
 
 
 
@@ -28,11 +29,12 @@ const Dashboard = async () => {
 		)
 
 		if (diff > 60) {
-			console.log(diff, 'scraping new data')
+			console.log('Data', diff, 'min old. Scraping new data.')
 			products?.map(async product => {
 				product = await updateProduct(product)
 			})
 			
+			updateUser(user.id as string)
 		}
 	}
 	
