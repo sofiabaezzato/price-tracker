@@ -8,6 +8,21 @@ describe(`Login, visit dashboard and add/remove products`, () => {
     });
   });
 
+  it('Type an invalid Amazon URL and display an error mesage', () => {
+    cy.get('[data-cy=urlInput]').type('https://www.amazon.it/gp/browse.html?node=411663031&ref_=nav_em__itlv_0_2_10_2')
+    cy.get('[data-cy=submitBtn]').click()
+    cy.get('[data-cy=submitBtn]').should('contain', 'Add...')
+    cy.get('h5').should('contain', 'Error, try again!');
+    cy.screenshot()
+  })
+
+  it('Type an non-Amazon URL and display an error mesage', () => {
+    cy.get('[data-cy=urlInput]').type('https://www.ebay.it/')
+    cy.get('[data-cy=submitBtn]').click()
+    cy.get('h5').should('contain', 'Error: not an Amazon product link!');
+    cy.screenshot()
+  })
+
   it('Add a new tracked product and display the product card', () => {
     cy.get('[data-cy=urlInput]').type('https://www.amazon.it/echo-dot-con-orologio/dp/B09B8RVKGW')
     cy.get('[data-cy=submitBtn]').click()
