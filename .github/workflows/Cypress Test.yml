@@ -31,4 +31,4 @@ jobs:
         if: always()
         with:
             name: cypress-snapshots
-            path: cypress/screenshots/sign_in.cy.ts
+            path: cypress/screenshots/signin_and_add_url.cy.ts
